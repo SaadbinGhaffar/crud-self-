@@ -1,0 +1,144 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+}
+
+/* Authentication Container */
+.auth-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.auth-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.auth-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+  width: 45%;
+}
+
+.auth-button:hover {
+  background-color: #0056b3;
+}
+
+/* App Container */
+.app-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.app-container h1 {
+  text-align: center;
+  color: #333;
+}
+
+.logout-button {
+  background-color: #dc3545;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 10px auto;
+  width: 100px;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}
+
+/* Post Section */
+.post-container {
+  background-color: #f8f9fa;
+  margin: 15px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.post-container h3 {
+  margin: 0;
+  color: #007bff;
+}
+
+.post-container p {
+  color: #555;
+}
+
+.add-post-button,
+.post-button {
+  background-color: #28a745;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px 5px 0 0;
+}
+
+.post-button:hover {
+  background-color: #218838;
+}
+
+.add-post-button:hover {
+  background-color: #218838;
+}
+
+/* Comments Section */
+.comment-container {
+  background-color: #f1f1f1;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  border-left: 4px solid #007bff;
+}
+
+.comment-container p {
+  margin: 0;
+  color: #444;
+}
+
+.add-comment-button,
+.comment-button {
+  background-color: #ffc107;
+  color: #000;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.comment-button:hover,
+.add-comment-button:hover {
+  background-color: #e0a800;
+}

@@ -1,0 +1,82 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "s",
+      "password": "s"
+    },
+    {
+      "id": "2",
+      "username": "q",
+      "password": "q"
+    },
+    {
+      "id": "3",
+      "username": "s",
+      "password": "s"
+    },
+    {
+      "id": "4",
+      "username": "1",
+      "password": "1"
+    }
+  ],
+  "posts": [
+    {
+      "id": "8708",
+      "title": "qwertyui",
+      "content": "qwertyuiop[\n",
+      "authorId": 1
+    },
+    {
+      "id": "141c",
+      "title": "Hello",
+      "content": "Hello World",
+      "authorId": 4
+    },
+    {
+      "id": "333a",
+      "title": "qwertyuio",
+      "content": "qwertyuiopasdfghjkl",
+      "authorId": 2
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "postId": 1,
+      "name": "id labore ex et quam laborum",
+      "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos tempora quo necessitatibus dolor quam autem quasi reprehenderit qui eos quo iure autem ut nam provident ut eos molestiae"
+    },
+    {
+      "id": "2",
+      "postId": 1,
+      "name": "quo vero reiciendis velit similique earum",
+      "body": "est natus enim nihil est dolore omnis voluptatem numquam et omnis occaecati quod ullam at voluptatem error expedita pariatur nihil sint nostrum voluptatem reiciendis et"
+    },
+    {
+      "id": "3",
+      "postId": 2,
+      "name": "odio adipisci rerum aut animi",
+      "body": "quia molestiae reprehenderit quasi aspernatur aut expedita occaecati aliquam eveniet laudantium omnis quibusdam delectus saepe quia accusamus maiores nam est consequatur voluptatem rem eaque voluptatem aut ut et sit quam"
+    },
+    {
+      "id": "4",
+      "postId": 2,
+      "name": "alias odio sit",
+      "body": "non et atque occaecati deserunt quas accusantium unde odit nobis qui voluptatem pariatur sit voluptas minus est voluptate omnis veritatis dolores voluptas sed doloremque odio"
+    },
+    {
+      "id": "5",
+      "postId": 3,
+      "name": "vero eaque aliquid doloribus et culpa",
+      "body": "harum non quasi et ratione tempore iure ex voluptates in ratione harum architecto fugit inventore cupiditate voluptates animi quo atque mollitia reprehenderit molestiae soluta ut"
+    },
+    {
+      "id": "6",
+      "postId": 3,
+      "name": "et fugit eligendi deleniti quidem qui sint nihil autem",
+      "body": "doloribus at sed quis culpa deserunt consectetur odio aut doloribus quasi fugiat voluptas doloribus modi consectetur earum saepe"
+    }
+  ]
+}

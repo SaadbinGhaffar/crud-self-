@@ -1,3 +1,5 @@
+// //data handled using json-parser
+
 // import React, { useEffect, useState } from "react";
 // import { useParams } from "react-router-dom";
 // import axios from "axios";
@@ -266,6 +268,34 @@
 //             </>
 //           )}
 
+//           {commentFields[post.id] && (
+//             <div className="comment-form">
+//               <input
+//                 type="text"
+//                 placeholder="Your Name"
+//                 value={commentFields[post.id].name}
+//                 onChange={(e) =>
+//                   handleCommentChange(post.id, "name", e.target.value)
+//                 }
+//                 className="input"
+//               />
+//               <textarea
+//                 placeholder="Your Comment"
+//                 value={commentFields[post.id].body}
+//                 onChange={(e) =>
+//                   handleCommentChange(post.id, "body", e.target.value)
+//                 }
+//                 className="textarea"
+//               />
+//               <button
+//                 className="submit-button"
+//                 onClick={() => handleCreateComment(post.id)}
+//               >
+//                 Submit Comment
+//               </button>
+//             </div>
+//           )}
+
 //           <div className="comments">
 //             <h4>Comments</h4>
 //             {comments
@@ -360,9 +390,11 @@
 
 // export default Posts;
 
-import React, { useEffect, useState } from "react";
+///////////////////////////////////////////////////////////////////////////
+
+//Data Handled using memory
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import "./Posts.css";
 
 const Posts = () => {
@@ -380,59 +412,29 @@ const Posts = () => {
   const [editName, setEditName] = useState("");
   const [editBody, setEditBody] = useState("");
 
-  useEffect(() => {
-    const fetchPostsAndComments = async () => {
-      try {
-        const postsResponse = await axios.get("http://localhost:3000/posts");
-        const userPosts = postsResponse.data.filter(
-          (post) => post.authorId === parseInt(userId)
-        );
-        setPosts(userPosts);
-
-        const commentsResponse = await axios.get(
-          "http://localhost:3000/comments"
-        );
-        setComments(commentsResponse.data);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      }
-    };
-
-    fetchPostsAndComments();
-  }, [userId]);
-
-  const handleCreatePost = async () => {
+  const handleCreatePost = () => {
     if (!title.trim() || !content.trim()) {
       setMessage("Title and content cannot be empty.");
       return;
     }
 
-    const post = {
+    const newPost = {
+      id: posts.length + 1,
       title,
       content,
       authorId: parseInt(userId),
     };
 
-    try {
-      const response = await axios.post("http://localhost:3000/posts", post);
-      setPosts([...posts, response.data]);
-      setTitle("");
-      setContent("");
-      setMessage("Post created successfully!");
-    } catch (error) {
-      console.error("Error creating post:", error);
-      setMessage("Error creating post. Please try again.");
-    }
+    setPosts([...posts, newPost]);
+    setTitle("");
+    setContent("");
+    setMessage("Post created successfully!");
   };
 
-  const handleDeletePost = async (postId) => {
-    try {
-      await axios.delete(`http://localhost:3000/posts/${postId}`);
-      setPosts(posts.filter((post) => post.id !== postId));
-      console.log(`Post ${postId} deleted successfully`);
-    } catch (error) {
-      console.error("Error deleting post:", error);
-    }
+  const handleDeletePost = (postId) => {
+    setPosts(posts.filter((post) => post.id !== postId)); //is postId k ilawa sb kuch dedo
+    setComments(comments.filter((comment) => comment.postId !== postId));
+    setMessage("Post deleted successfully!");
   };
 
   const handleEditPost = (post) => {
@@ -441,38 +443,27 @@ const Posts = () => {
     setEditContent(post.content);
   };
 
-  const handleSaveEditPost = async () => {
+  const handleSaveEditPost = () => {
     if (!editTitle.trim() || !editContent.trim()) {
       setMessage("Title and content cannot be empty.");
       return;
     }
 
-    const updatedPost = {
-      title: editTitle,
-      content: editContent,
-      authorId: parseInt(userId),
-    };
+    setPosts(
+      posts.map((post) =>
+        post.id === editPostId
+          ? { ...post, title: editTitle, content: editContent }
+          : post
+      )
+    );
 
-    try {
-      await axios.put(`http://localhost:3000/posts/${editPostId}`, updatedPost);
-      setPosts(
-        posts.map((post) =>
-          post.id === editPostId
-            ? { ...post, title: editTitle, content: editContent }
-            : post
-        )
-      );
-      setEditPostId(null);
-      setEditTitle("");
-      setEditContent("");
-      setMessage("Post updated successfully!");
-    } catch (error) {
-      console.error("Error updating post:", error);
-      setMessage("Error updating post. Please try again.");
-    }
+    setEditPostId(null);
+    setEditTitle("");
+    setEditContent("");
+    setMessage("Post updated successfully!");
   };
 
-  const handleCreateComment = async (postId) => {
+  const handleCreateComment = (postId) => {
     const { name, body } = commentFields[postId] || {};
 
     if (!name?.trim() || !body?.trim()) {
@@ -481,26 +472,18 @@ const Posts = () => {
     }
 
     const newComment = {
+      id: comments.length + 1,
       postId,
       name,
       body,
     };
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/comments",
-        newComment
-      );
-      setComments([...comments, response.data]);
-      setCommentFields((prev) => ({
-        ...prev,
-        [postId]: { name: "", body: "" },
-      }));
-      setMessage("Comment added successfully!");
-    } catch (error) {
-      console.error("Error creating comment:", error);
-      setMessage("Error creating comment. Please try again.");
-    }
+    setComments([...comments, newComment]);
+    setCommentFields((prev) => ({
+      ...prev,
+      [postId]: { name: "", body: "" },
+    }));
+    setMessage("Comment added successfully!");
   };
 
   const handleCommentChange = (postId, field, value) => {
@@ -513,14 +496,9 @@ const Posts = () => {
     }));
   };
 
-  const handleDeleteComment = async (commentId) => {
-    try {
-      await axios.delete(`http://localhost:3000/comments/${commentId}`);
-      setComments(comments.filter((comment) => comment.id !== commentId));
-      console.log(`Comment ${commentId} deleted successfully`);
-    } catch (error) {
-      console.error("Error deleting comment:", error);
-    }
+  const handleDeleteComment = (commentId) => {
+    setComments(comments.filter((comment) => comment.id !== commentId));
+    setMessage("Comment deleted successfully!");
   };
 
   const handleEditComment = (comment) => {
@@ -529,38 +507,24 @@ const Posts = () => {
     setEditBody(comment.body);
   };
 
-  const handleSaveEditComment = async () => {
+  const handleSaveEditComment = () => {
     if (!editName.trim() || !editBody.trim()) {
       setMessage("Name and body cannot be empty.");
       return;
     }
 
-    const updatedComment = {
-      name: editName,
-      body: editBody,
-      postId: comments.find((comment) => comment.id === editCommentId)?.postId,
-    };
+    setComments(
+      comments.map((comment) =>
+        comment.id === editCommentId
+          ? { ...comment, name: editName, body: editBody }
+          : comment
+      )
+    );
 
-    try {
-      await axios.put(
-        `http://localhost:3000/comments/${editCommentId}`,
-        updatedComment
-      );
-      setComments(
-        comments.map((comment) =>
-          comment.id === editCommentId
-            ? { ...comment, name: editName, body: editBody }
-            : comment
-        )
-      );
-      setEditCommentId(null);
-      setEditName("");
-      setEditBody("");
-      setMessage("Comment updated successfully!");
-    } catch (error) {
-      console.error("Error updating comment:", error);
-      setMessage("Error updating comment. Please try again.");
-    }
+    setEditCommentId(null);
+    setEditName("");
+    setEditBody("");
+    setMessage("Comment updated successfully!");
   };
 
   return (
@@ -734,16 +698,6 @@ const Posts = () => {
           Create Post
         </button>
       </div>
-
-      {message && (
-        <p
-          className={`message ${
-            message.includes("successfully") ? "success" : "error"
-          }`}
-        >
-          {message}
-        </p>
-      )}
     </div>
   );
 };

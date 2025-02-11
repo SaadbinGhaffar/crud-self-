@@ -3,23 +3,37 @@ import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const Login = ({ setLoggedin }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  // Handle input changes dynamically
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // Dynamically update the field
+    }));
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    ///////// get users from localStorage
+    // Get users from localStorage
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
     const user = users.find(
-      (user) => user.username === username && user.password === password
+      (user) =>
+        user.username === formData.username &&
+        user.password === formData.password
     );
 
     if (user) {
-      // saving the loggedIn user
+      // Save the logged-in user
       localStorage.setItem("loggedInUser", JSON.stringify(user));
       setLoggedin(user);
       navigate(`/posts/${user.id}`);
@@ -35,20 +49,22 @@ const Login = ({ setLoggedin }) => {
         <div className="input-container">
           <input
             type="text"
+            name="username"
             className="input-field"
             placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={formData.username}
+            onChange={handleChange}
             required
           />
         </div>
         <div className="input-container">
           <input
             type="password"
+            name="password"
             className="input-field"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleChange}
             required
           />
         </div>

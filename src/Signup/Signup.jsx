@@ -26,6 +26,23 @@ const Signup = () => {
       return;
     }
 
+    // const usernamePattern = /^[a-zA-Z0-9_]+$/; // Only alphanumeric and underscore
+    // if (!usernamePattern.test(formData.username)) {
+    //   setMessage(
+    //     "Username can only contain letters, numbers, and underscores."
+    //   );
+    //   return;
+    // }
+
+    // // Optional: Password validation (e.g., at least 6 characters, contains number and special character)
+    // const passwordPattern = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/; // At least 6 characters, a number, and a special char
+    // if (!passwordPattern.test(formData.password)) {
+    //   setMessage(
+    //     "Password must be at least 6 characters long and contain a number and a special character."
+    //   );
+    //   return;
+    // }
+
     const users = JSON.parse(localStorage.getItem("users")) || [];
 
     if (users.some((user) => user.username === formData.username)) {

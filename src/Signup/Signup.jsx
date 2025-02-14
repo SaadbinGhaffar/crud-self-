@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
+import SecondaryButton from "../../components/Buttons/SecondaryButton";
+import PrimaryButton from "../../components/Buttons/PrimaryButton";
+import TextInput from "../../components/Input/TextInput";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+  const [fieldErrors, setFieldErrors] = useState({
     username: "",
     password: "",
   });
@@ -16,50 +23,53 @@ const Signup = () => {
       ...prev,
       [name]: value,
     }));
+    setFieldErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
   };
 
   const handleSignup = (e) => {
     e.preventDefault();
+    let hasError = false;
+    const newErrors = { username: "", password: "" };
 
     if (!formData.username.trim() || !formData.password.trim()) {
       setMessage("Both fields are required.");
-      return;
+      hasError = true;
     }
 
-    // const usernamePattern = /^[a-zA-Z0-9_]+$/; // Only alphanumeric and underscore
-    // if (!usernamePattern.test(formData.username)) {
-    //   setMessage(
-    //     "Username can only contain letters, numbers, and underscores."
-    //   );
-    //   return;
-    // }
+    const usernamePattern = /^[a-zA-Z0-9_]+$/;
+    if (!usernamePattern.test(formData.username)) {
+      newErrors.username =
+        "Username can only contain letters, numbers, and underscores.";
+      hasError = true;
+    }
 
-    // // Optional: Password validation (e.g., at least 6 characters, contains number and special character)
-    // const passwordPattern = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/; // At least 6 characters, a number, and a special char
-    // if (!passwordPattern.test(formData.password)) {
-    //   setMessage(
-    //     "Password must be at least 6 characters long and contain a number and a special character."
-    //   );
-    //   return;
-    // }
+    const passwordPattern = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}$/;
+    if (!passwordPattern.test(formData.password)) {
+      newErrors.password =
+        "Password must be at least 6 characters long and contain a number and a special character.";
+      hasError = true;
+    }
 
     const users = JSON.parse(localStorage.getItem("users")) || [];
-
     if (users.some((user) => user.username === formData.username)) {
-      setMessage("Username already exists. Choose another.");
-      return;
+      newErrors.username = "Username already exists. Choose another.";
+      hasError = true;
     }
 
-    /// Create new user
+    setFieldErrors(newErrors);
+
+    if (hasError) return;
+
     const newUser = {
       id: Date.now(),
       username: formData.username,
       password: formData.password,
     };
 
-    ////// Saving user to localStorage
     localStorage.setItem("users", JSON.stringify([...users, newUser]));
-
     setMessage("Signup successful! Redirecting...");
     navigate("/");
   };
@@ -68,32 +78,33 @@ const Signup = () => {
     <div className="signup-container">
       <h2 className="signup-header">Create an Account</h2>
       <form className="signup-form" onSubmit={handleSignup}>
-        <input
+        <TextInput
           type="text"
           name="username"
           placeholder="Username"
           value={formData.username}
           onChange={handleChange}
+          error={fieldErrors.username}
           className="signup-input"
         />
-        <input
+        <TextInput
           type="password"
           name="password"
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
+          error={fieldErrors.password}
           className="signup-input"
         />
-        <button type="submit" className="signup-button">
+        <PrimaryButton type="submit" className="signup-button">
           Sign Up
-        </button>
-        <button
-          type="button"
+        </PrimaryButton>
+        <SecondaryButton
           onClick={() => navigate("/")}
           className="signup-button secondary"
         >
           Go to Login
-        </button>
+        </SecondaryButton>
       </form>
       {message && (
         <p

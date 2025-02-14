@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import CommentSection from "../CommentComponent/CommentSection";
-
+import PrimaryButton from "../../components/Buttons/PrimaryButton";
+import SecondaryButton from "../../components/Buttons/SecondaryButton";
+import EditButton from "../../components/Buttons/EditButton";
+import DeleteButton from "../../components/Buttons/DeleteButton";
 const PostSection = ({
   post,
   comments,
@@ -33,27 +36,30 @@ const PostSection = ({
             onChange={(e) => setNewContent(e.target.value)}
             className="textarea"
           />
-          <button className="save-button" onClick={handleSavePost}>
+          <PrimaryButton onClick={handleSavePost} className="save-button">
             Save
-          </button>
-          <button className="cancel-button" onClick={() => setEditPost(false)}>
+          </PrimaryButton>
+          <SecondaryButton
+            onClick={() => setEditPost(false)}
+            className="cancel-button"
+          >
             Cancel
-          </button>
+          </SecondaryButton>
         </div>
       ) : (
         <div>
           <h2 className="post-id">Post ID: {post.id}</h2>
           <h3 className="post-title">TITLE: {post.title}</h3>
           <p className="post-content">DESCRIPTION: {post.content}</p>
-          <button className="edit-button" onClick={() => setEditPost(true)}>
+          <EditButton onClick={() => setEditPost(true)} className="edit-button">
             Edit Post
-          </button>
-          <button
-            className="delete-button"
+          </EditButton>
+          <DeleteButton
             onClick={() => onDeletePost(post.id)}
+            className="delete-button"
           >
             Delete Post
-          </button>
+          </DeleteButton>
         </div>
       )}
 

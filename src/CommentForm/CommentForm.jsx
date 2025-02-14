@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PrimaryButton from "../../components/Buttons/PrimaryButton";
 
 const CommentForm = ({ postId, onCreateComment }) => {
   const [name, setName] = useState("");
@@ -25,9 +26,9 @@ const CommentForm = ({ postId, onCreateComment }) => {
         onChange={(e) => setBody(e.target.value)}
         className="textarea"
       />
-      <button className="submit-button" onClick={handleSubmit}>
+      <PrimaryButton onClick={handleSubmit} className="submit-button">
         Submit Comment
-      </button>
+      </PrimaryButton>
     </div>
   );
 };

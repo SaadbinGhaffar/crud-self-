@@ -7,11 +7,11 @@ import TextInput from "../../components/Input/TextInput";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [fieldErrors, setFieldErrors] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [message, setMessage] = useState("");
@@ -32,17 +32,10 @@ const Signup = () => {
   const handleSignup = (e) => {
     e.preventDefault();
     let hasError = false;
-    const newErrors = { username: "", password: "" };
+    const newErrors = { email: "", password: "" };
 
-    if (!formData.username.trim() || !formData.password.trim()) {
+    if (!formData.email.trim() || !formData.password.trim()) {
       setMessage("Both fields are required.");
-      hasError = true;
-    }
-
-    const usernamePattern = /^[a-zA-Z0-9_]+$/;
-    if (!usernamePattern.test(formData.username)) {
-      newErrors.username =
-        "Username can only contain letters, numbers, and underscores.";
       hasError = true;
     }
 
@@ -54,8 +47,8 @@ const Signup = () => {
     }
 
     const users = JSON.parse(localStorage.getItem("users")) || [];
-    if (users.some((user) => user.username === formData.username)) {
-      newErrors.username = "Username already exists. Choose another.";
+    if (users.some((user) => user.email === formData.email)) {
+      newErrors.email = "Username already exists. Choose another.";
       hasError = true;
     }
 
@@ -65,7 +58,7 @@ const Signup = () => {
 
     const newUser = {
       id: Date.now(),
-      username: formData.username,
+      email: formData.email,
       password: formData.password,
     };
 
@@ -79,12 +72,12 @@ const Signup = () => {
       <h2 className="signup-header">Create an Account</h2>
       <form className="signup-form" onSubmit={handleSignup}>
         <TextInput
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
+          type="email"
+          name="email"
+          placeholder="email"
+          value={formData.email}
           onChange={handleChange}
-          error={fieldErrors.username}
+          error={fieldErrors.email}
           className="signup-input"
         />
         <TextInput

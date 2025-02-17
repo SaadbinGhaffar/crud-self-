@@ -11,9 +11,7 @@ const CommentSection = ({
       <h4>Comments</h4>
       {comments.map((comment) => (
         <div key={comment.id}>
-          <p>
-            <strong>{comment.name}:</strong> {comment.body}
-          </p>
+          <p>{comment.body}</p>
           <button
             className="delete-button"
             onClick={() => onDeleteComment(comment.id)}

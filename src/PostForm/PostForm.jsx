@@ -79,7 +79,7 @@ const PostForm = ({ onCreatePost }) => {
       <TextInput
         type="textarea"
         name="content"
-        placeholder="Content"
+        placeholder="Description"
         value={content}
         onChange={(e) => {
           setContent(e.target.value);

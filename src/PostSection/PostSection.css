@@ -1,0 +1,217 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Container */
+.post-section {
+  max-width: 800px;
+  width: 90%;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  transition: 0.3s;
+}
+
+.post-section:hover {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Toggle Button */
+.toggle-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-bottom: 15px;
+  transition: all 0.3s ease-in-out;
+}
+
+.toggle-button:hover {
+  background: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Post Box */
+.post {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
+  transition: all 0.3s ease-in-out;
+}
+
+.post:hover {
+  transform: translateY(-3px);
+}
+
+/* Title & Description */
+.post-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.post-description {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+/* Buttons */
+.edit-button,
+.delete-button {
+  background: #007bff;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.edit-button:hover {
+  background: #0056b3;
+}
+
+.delete-button {
+  background: #dc3545;
+}
+
+.delete-button:hover {
+  background: #a71d2a;
+}
+
+/* Edit Section */
+.edit-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+}
+
+/* Input Fields */
+.input,
+.textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border 0.3s ease-in-out;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.textarea {
+  resize: vertical;
+  height: 120px;
+}
+
+/* Save & Cancel Buttons */
+.save-button {
+  background: #28a745;
+}
+
+.save-button:hover {
+  background: #1e7e34;
+}
+
+.cancel-button {
+  background: #6c757d;
+}
+
+.cancel-button:hover {
+  background: #5a6268;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .post-section {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .toggle-button {
+    font-size: 16px;
+    padding: 10px 15px;
+  }
+
+  .post-title {
+    font-size: 20px;
+  }
+
+  .post-description {
+    font-size: 14px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .edit-button,
+  .delete-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-section {
+    padding: 12px;
+  }
+
+  .toggle-button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .post-title {
+    font-size: 18px;
+  }
+
+  .post-description {
+    font-size: 13px;
+  }
+
+  .input,
+  .textarea {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 6px;
+  }
+}

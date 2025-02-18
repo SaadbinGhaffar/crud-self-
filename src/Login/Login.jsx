@@ -87,13 +87,17 @@ import "./Login.css";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import TextInput from "../../components/Input/TextInput";
+import Pagination from "../../components/Pagination/Pagination";
 
 const Login = ({ setLoggedin }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(8);
+  const [allPosts, setAllPosts] = useState([]); // Store all posts
+  const [paginatedPosts, setPaginatedPosts] = useState([]); // Store current page posts
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -117,7 +121,7 @@ const Login = ({ setLoggedin }) => {
         const localPosts = JSON.parse(localStorage.getItem("userPosts")) || [];
 
         // Create a combined array with enhanced post info
-        const allPosts = [
+        const combinedPosts = [
           ...apiPosts.map((post) => ({
             ...post,
             content: post.body,
@@ -136,13 +140,13 @@ const Login = ({ setLoggedin }) => {
         ];
 
         // Sort by created date, newest first
-        allPosts.sort(
+        combinedPosts.sort(
           (a, b) =>
             new Date(b.createdAt || b.updatedAt || 0) -
             new Date(a.createdAt || a.updatedAt || 0)
         );
 
-        setPosts(allPosts);
+        setAllPosts(combinedPosts);
       } catch (err) {
         setError(`Failed to fetch posts: ${err.message}`);
       } finally {
@@ -163,6 +167,13 @@ const Login = ({ setLoggedin }) => {
       window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
+
+  // Handle pagination
+  useEffect(() => {
+    const lastPostIndex = currentPage * postsPerPage;
+    const firstPostIndex = lastPostIndex - postsPerPage;
+    setPaginatedPosts(allPosts.slice(firstPostIndex, lastPostIndex));
+  }, [currentPage, postsPerPage, allPosts]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -247,8 +258,8 @@ const Login = ({ setLoggedin }) => {
           <p className="loading-text">Loading posts...</p>
         ) : (
           <div className="posts-list">
-            {posts.length > 0 ? (
-              posts.map((post) => (
+            {paginatedPosts.length > 0 ? (
+              paginatedPosts.map((post) => (
                 <div key={post.id} className="post-card">
                   <h4 className="post-title">{post.title}</h4>
                   <p className="post-body">{post.content || post.body}</p>
@@ -271,6 +282,12 @@ const Login = ({ setLoggedin }) => {
             ) : (
               <p>No posts available</p>
             )}
+            <Pagination
+              totalPosts={allPosts.length}
+              postsPerPage={postsPerPage}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+            />
           </div>
         )}
       </div>

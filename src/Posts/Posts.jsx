@@ -80,15 +80,16 @@ const Posts = () => {
 
       const newPost = await response.json();
 
-      // Add some data that will help us identify this as a local post
+      // Generate a unique ID for the new post
       const enhancedPost = {
         ...newPost,
+        id: crypto.randomUUID(), // Unique ID for post management
         isLocal: true,
         createdAt: new Date().toISOString(),
       };
 
       // Update posts state
-      setPosts([...posts, enhancedPost]);
+      setPosts((prevPosts) => [...prevPosts, enhancedPost]);
 
       // Store in localStorage
       const localPosts = JSON.parse(localStorage.getItem("userPosts")) || [];
@@ -150,65 +151,72 @@ const Posts = () => {
   };
 
   const handleEditPost = async (postId, title, content) => {
-    try {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/posts/${postId}`,
-        {
-          method: "PATCH",
-          body: JSON.stringify({
-            title,
-            body: content,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        }
-      );
+    const isConfirmed = window.confirm(
+      "Are you Sure you want to Update thisS Post"
+    );
 
-      const updatedPost = await response.json();
-
-      // Get the existing post to check if it's a local one
-      const existingPost = posts.find((post) => post.id === postId);
-      const isLocalPost = existingPost?.isLocal;
-
-      // Update posts state
-      setPosts(
-        posts.map((post) =>
-          post.id === postId
-            ? {
-                ...post,
-                title: updatedPost.title,
-                body: updatedPost.body,
-                content: updatedPost.body,
-                updatedAt: new Date().toISOString(),
-              }
-            : post
-        )
-      );
-
-      // If this was a local post, update it in localStorage too
-      if (isLocalPost) {
-        const localPosts = JSON.parse(localStorage.getItem("userPosts")) || [];
-        const updatedLocalPosts = localPosts.map((post) =>
-          post.id === postId
-            ? {
-                ...post,
-                title: updatedPost.title,
-                body: updatedPost.body,
-                content: updatedPost.body,
-                updatedAt: new Date().toISOString(),
-              }
-            : post
+    if (isConfirmed) {
+      try {
+        const response = await fetch(
+          `https://jsonplaceholder.typicode.com/posts/${postId}`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({
+              title,
+              body: content,
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }
         );
-        localStorage.setItem("userPosts", JSON.stringify(updatedLocalPosts));
 
-        // Trigger storage event
-        window.dispatchEvent(new Event("storage"));
+        const updatedPost = await response.json();
+
+        // Get the existing post to check if it's a local one
+        const existingPost = posts.find((post) => post.id === postId);
+        const isLocalPost = existingPost?.isLocal;
+
+        // Update posts state
+        setPosts(
+          posts.map((post) =>
+            post.id === postId
+              ? {
+                  ...post,
+                  title: updatedPost.title,
+                  body: updatedPost.body,
+                  content: updatedPost.body,
+                  updatedAt: new Date().toISOString(),
+                }
+              : post
+          )
+        );
+
+        // If this was a local post, update it in localStorage too
+        if (isLocalPost) {
+          const localPosts =
+            JSON.parse(localStorage.getItem("userPosts")) || [];
+          const updatedLocalPosts = localPosts.map((post) =>
+            post.id === postId
+              ? {
+                  ...post,
+                  title: updatedPost.title,
+                  body: updatedPost.body,
+                  content: updatedPost.body,
+                  updatedAt: new Date().toISOString(),
+                }
+              : post
+          );
+          localStorage.setItem("userPosts", JSON.stringify(updatedLocalPosts));
+
+          // Trigger storage event
+          window.dispatchEvent(new Event("storage"));
+        }
+
+        setMessage("Post updated successfully!");
+      } catch (error) {
+        setMessage(`Error updating post: ${error.message}`);
       }
-
-      setMessage("Post updated successfully!");
-    } catch (error) {
-      setMessage(`Error updating post: ${error.message}`);
     }
   };
 
@@ -315,7 +323,6 @@ const Posts = () => {
 
   return (
     <div className="container">
-      <h2 className="header">User {userId}'s Posts</h2>
       <h3 className="subheader">
         Total {posts.length} {posts.length === 1 ? "Post" : "Posts"}
       </h3>

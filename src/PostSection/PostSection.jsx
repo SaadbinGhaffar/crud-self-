@@ -48,12 +48,11 @@ const PostSection = ({
         </div>
       ) : (
         <div>
-          <h2 className="post-id">Post ID: {post.id}</h2>
           <h3 className="post-title">TITLE: {post.title}</h3>
           <p className="post-content">DESCRIPTION: {post.content}</p>
           <EditButton onClick={() => setEditPost(true)} className="edit-button">
             Edit Post
-          </EditButton>
+          </EditButton>{" "}
           <DeleteButton
             onClick={() => onDeletePost(post.id)}
             className="delete-button"
@@ -74,3 +73,59 @@ const PostSection = ({
 };
 
 export default PostSection;
+
+// import React from "react";
+// import { useNavigate } from "react-router-dom";
+// import CommentSection from "../CommentComponent/CommentSection";
+// import EditButton from "../../components/Buttons/EditButton";
+// import DeleteButton from "../../components/Buttons/DeleteButton";
+
+// const PostSection = ({
+//   post,
+//   comments,
+//   onDeletePost,
+//   onEditPost,
+//   onCreateComment,
+//   onDeleteComment,
+// }) => {
+//   const navigate = useNavigate();
+
+//   const handleEditClick = () => {
+//     navigate(`/edit-post/${post.id}`, {
+//       state: {
+//         post: {
+//           id: post.id,
+//           title: post.title,
+//           content: post.content,
+//         },
+//       },
+//     });
+//   };
+
+//   return (
+//     <div className="post" key={post.id}>
+//       <div>
+//         <h3 className="post-title">TITLE: {post.title}</h3>
+//         <p className="post-content">DESCRIPTION: {post.content}</p>
+//         <EditButton onClick={handleEditClick} className="edit-button">
+//           Edit Post
+//         </EditButton>{" "}
+//         <DeleteButton
+//           onClick={() => onDeletePost(post.id)}
+//           className="delete-button"
+//         >
+//           Delete Post
+//         </DeleteButton>
+//       </div>
+
+//       <CommentSection
+//         comments={comments}
+//         postId={post.id}
+//         onCreateComment={onCreateComment}
+//         onDeleteComment={onDeleteComment}
+//       />
+//     </div>
+//   );
+// };
+
+// export default PostSection;

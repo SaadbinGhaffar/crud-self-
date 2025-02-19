@@ -314,7 +314,7 @@ const Posts = () => {
 
   function logoutUser() {
     localStorage.removeItem("userId");
-    navigate("/");
+    navigate("/login");
   }
 
   if (loading) {
@@ -340,10 +340,6 @@ const Posts = () => {
       ))}
       <PostForm onCreatePost={handleCreatePost} />
       {message && <div className="message">{message}</div>}
-
-      <button onClick={logoutUser}>
-        <p>Logout</p>
-      </button>
     </div>
   );
 };

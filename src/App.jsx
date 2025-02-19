@@ -11,6 +11,8 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Login setLoggedin={setLoggedin} />} />
+
+        <Route path="/login" element={<Login setLoggedin={setLoggedin} />} />
         <Route path="/posts/:userId" element={<Posts />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>

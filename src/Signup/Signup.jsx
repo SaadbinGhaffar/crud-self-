@@ -4,6 +4,7 @@ import "./Signup.css";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import TextInput from "../../components/Input/TextInput";
+import Navbar from "../Navbar/Navbar";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -64,50 +65,53 @@ const Signup = () => {
 
     localStorage.setItem("users", JSON.stringify([...users, newUser]));
     setMessage("Signup successful! Redirecting...");
-    navigate("/");
+    navigate("/login");
   };
 
   return (
-    <div className="signup-container">
-      <h2 className="signup-header">Create an Account</h2>
-      <form className="signup-form" onSubmit={handleSignup}>
-        <TextInput
-          type="email"
-          name="email"
-          placeholder="email"
-          value={formData.email}
-          onChange={handleChange}
-          error={fieldErrors.email}
-          className="signup-input"
-        />
-        <TextInput
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          error={fieldErrors.password}
-          className="signup-input"
-        />
-        <PrimaryButton type="submit" className="signup-button">
-          Sign Up
-        </PrimaryButton>
-        <SecondaryButton
-          onClick={() => navigate("/")}
-          className="signup-button secondary"
-        >
-          Go to Login
-        </SecondaryButton>
-      </form>
-      {message && (
-        <p
-          className={`signup-message ${
-            message.includes("successful") ? "success" : "error"
-          }`}
-        >
-          {message}
-        </p>
-      )}
+    <div>
+      <Navbar />
+      <div className="signup-container">
+        <h2 className="signup-header">Create an Account</h2>
+        <form className="signup-form" onSubmit={handleSignup}>
+          <TextInput
+            type="email"
+            name="email"
+            placeholder="email"
+            value={formData.email}
+            onChange={handleChange}
+            error={fieldErrors.email}
+            className="signup-input"
+          />
+          <TextInput
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            error={fieldErrors.password}
+            className="signup-input"
+          />
+          <PrimaryButton type="submit" className="signup-button">
+            Sign Up
+          </PrimaryButton>
+          <SecondaryButton
+            onClick={() => navigate("/login")}
+            className="signup-button secondary"
+          >
+            Go to Login
+          </SecondaryButton>
+        </form>
+        {message && (
+          <p
+            className={`signup-message ${
+              message.includes("successful") ? "success" : "error"
+            }`}
+          >
+            {message}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

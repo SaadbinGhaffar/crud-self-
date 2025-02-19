@@ -82,12 +82,13 @@
 
 // export default Login;
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import TextInput from "../../components/Input/TextInput";
 import Pagination from "../../components/Pagination/Pagination";
+import Navbar from "../Navbar/Navbar";
 
 const Login = ({ setLoggedin }) => {
   const [formData, setFormData] = useState({
@@ -215,81 +216,84 @@ const Login = ({ setLoggedin }) => {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <h2 className="login-heading">Login</h2>
-        <form onSubmit={handleLogin} className="login-form">
-          <TextInput
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="input-field"
-          />
-          <TextInput
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            className="input-field"
-          />
-          <div className="button-container">
-            <PrimaryButton type="submit" className="login-btn">
-              Login
-            </PrimaryButton>
-            <SecondaryButton
-              onClick={() => navigate("/signup")}
-              className="signup-btn"
-            >
-              Signup for First Time
-            </SecondaryButton>
-          </div>
-          {error && <p className="error-message">{error}</p>}
-        </form>
-      </div>
-
-      <div className="posts-display">
-        <h3>All Posts</h3>
-        {loading ? (
-          <p className="loading-text">Loading posts...</p>
-        ) : (
-          <div className="posts-list">
-            {paginatedPosts.length > 0 ? (
-              paginatedPosts.map((post) => (
-                <div key={post.id} className="post-card">
-                  <h4 className="post-title">{post.title}</h4>
-                  <p className="post-body">{post.content || post.body}</p>
-                  <div className="post-meta">
-                    {post.createdAt && (
-                      <p className="post-date">
-                        {post.isLocal ? "Created: " : ""}
-                        {formatDate(post.createdAt)}
-                      </p>
-                    )}
-                    {post.updatedAt && (
-                      <p className="post-date">
-                        Updated: {formatDate(post.updatedAt)}
-                      </p>
-                    )}
-                  </div>
-                  {post.isLocal && <span className="local-badge">New</span>}
-                </div>
-              ))
-            ) : (
-              <p>No posts available</p>
-            )}
-            <Pagination
-              totalPosts={allPosts.length}
-              postsPerPage={postsPerPage}
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
+    <div>
+      <Navbar />
+      <div className="login-page">
+        <div className="login-container">
+          <h2 className="login-heading">Login</h2>
+          <form onSubmit={handleLogin} className="login-form">
+            <TextInput
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="input-field"
             />
-          </div>
-        )}
+            <TextInput
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="input-field"
+            />
+            <div className="button-container">
+              <PrimaryButton type="submit" className="login-btn">
+                Login
+              </PrimaryButton>
+              <SecondaryButton
+                onClick={() => navigate("/signup")}
+                className="signup-btn"
+              >
+                Signup for First Time
+              </SecondaryButton>
+            </div>
+            {error && <p className="error-message">{error}</p>}
+          </form>
+        </div>
+
+        <div className="posts-display">
+          <h3>All Posts</h3>
+          {loading ? (
+            <p className="loading-text">Loading posts...</p>
+          ) : (
+            <div className="posts-list">
+              {paginatedPosts.length > 0 ? (
+                paginatedPosts.map((post) => (
+                  <div key={post.id} className="post-card">
+                    <h4 className="post-title">{post.title}</h4>
+                    <p className="post-body">{post.content || post.body}</p>
+                    <div className="post-meta">
+                      {post.createdAt && (
+                        <p className="post-date">
+                          {post.isLocal ? "Created: " : ""}
+                          {formatDate(post.createdAt)}
+                        </p>
+                      )}
+                      {post.updatedAt && (
+                        <p className="post-date">
+                          Updated: {formatDate(post.updatedAt)}
+                        </p>
+                      )}
+                    </div>
+                    {post.isLocal && <span className="local-badge">New</span>}
+                  </div>
+                ))
+              ) : (
+                <p>No posts available</p>
+              )}
+              <Pagination
+                totalPosts={allPosts.length}
+                postsPerPage={postsPerPage}
+                setCurrentPage={setCurrentPage}
+                currentPage={currentPage}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

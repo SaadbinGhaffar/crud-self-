@@ -3,6 +3,7 @@ import Login from "./Login/Login";
 import Posts from "./Posts/Posts";
 import { useState } from "react";
 import Signup from "./Signup/Signup";
+import ShowPosts from "./ShowPosts/ShowPosts";
 
 const App = () => {
   const [loggedin, setLoggedin] = useState(null);
@@ -10,7 +11,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login setLoggedin={setLoggedin} />} />
+        <Route path="/" element={<ShowPosts />} />
 
         <Route path="/login" element={<Login setLoggedin={setLoggedin} />} />
         <Route path="/posts/:userId" element={<Posts />} />

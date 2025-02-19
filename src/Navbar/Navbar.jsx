@@ -6,6 +6,9 @@ const Navbar = () => {
     <nav className="navbar">
       <h2 className="navbar-logo">CRUD APP</h2>
       <div className="navbar-links">
+        <Link to="/" className="nav-link">
+          All Posts
+        </Link>
         <Link to="/login" className="nav-link">
           Login
         </Link>

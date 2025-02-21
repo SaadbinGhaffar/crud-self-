@@ -3,6 +3,7 @@ import PostSection from "../PostSection/PostSection";
 import PostForm from "../PostForm/PostForm";
 import "./Posts.css";
 import { useEffect, useState } from "react";
+import Navbar from "../Navbar/Navbar";
 
 const Posts = () => {
   const navigate = useNavigate();
@@ -150,74 +151,8 @@ const Posts = () => {
     }
   };
 
-  const handleEditPost = async (postId, title, content) => {
-    const isConfirmed = window.confirm(
-      "Are you Sure you want to Update thisS Post"
-    );
-
-    if (isConfirmed) {
-      try {
-        const response = await fetch(
-          `https://jsonplaceholder.typicode.com/posts/${postId}`,
-          {
-            method: "PATCH",
-            body: JSON.stringify({
-              title,
-              body: content,
-            }),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-            },
-          }
-        );
-
-        const updatedPost = await response.json();
-
-        // Get the existing post to check if it's a local one
-        const existingPost = posts.find((post) => post.id === postId);
-        const isLocalPost = existingPost?.isLocal;
-
-        // Update posts state
-        setPosts(
-          posts.map((post) =>
-            post.id === postId
-              ? {
-                  ...post,
-                  title: updatedPost.title,
-                  body: updatedPost.body,
-                  content: updatedPost.body,
-                  updatedAt: new Date().toISOString(),
-                }
-              : post
-          )
-        );
-
-        // If this was a local post, update it in localStorage too
-        if (isLocalPost) {
-          const localPosts =
-            JSON.parse(localStorage.getItem("userPosts")) || [];
-          const updatedLocalPosts = localPosts.map((post) =>
-            post.id === postId
-              ? {
-                  ...post,
-                  title: updatedPost.title,
-                  body: updatedPost.body,
-                  content: updatedPost.body,
-                  updatedAt: new Date().toISOString(),
-                }
-              : post
-          );
-          localStorage.setItem("userPosts", JSON.stringify(updatedLocalPosts));
-
-          // Trigger storage event
-          window.dispatchEvent(new Event("storage"));
-        }
-
-        setMessage("Post updated successfully!");
-      } catch (error) {
-        setMessage(`Error updating post: ${error.message}`);
-      }
-    }
+  const handleEditPost = async (postId) => {
+    navigate(`/edit-post/${postId}`);
   };
 
   // Comment Operations
@@ -312,10 +247,10 @@ const Posts = () => {
     }
   };
 
-  function logoutUser() {
-    localStorage.removeItem("userId");
-    navigate("/login");
-  }
+  // function logoutUser() {
+  //   localStorage.removeItem("loggedInUser");
+  //   navigate("/login");
+  // }
 
   if (loading) {
     return <div className="loading">Loading posts and comments...</div>;
@@ -323,6 +258,9 @@ const Posts = () => {
 
   return (
     <div className="container">
+      <div>
+        <Navbar />
+      </div>
       <h3 className="subheader">
         Total {posts.length} {posts.length === 1 ? "Post" : "Posts"}
       </h3>
@@ -330,8 +268,11 @@ const Posts = () => {
       {posts.map((post) => (
         <PostSection
           key={post.id}
-          post={{ ...post, content: post.body || post.content }} // Map API's 'body' to your 'content'
-          comments={comments.filter((comment) => comment.postId === post.id)}
+          post={{ ...post, content: post.body || post.content }}
+          comments={[
+            ...comments.filter((comment) => comment.postId === post.id),
+            ...(JSON.parse(localStorage.getItem(`comments_${post.id}`)) || []), // Include stored comments
+          ]}
           onDeletePost={handleDeletePost}
           onEditPost={handleEditPost}
           onCreateComment={handleCreateComment}

@@ -113,6 +113,20 @@ const ShowPosts = () => {
     });
   };
 
+  const fetchComments = async (postId) => {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/posts/${postId}/comments`
+      );
+      const comments = await response.json();
+
+      // Navigate with comments and postId
+      navigate("/all-comments", { state: { comments, postId } });
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -141,22 +155,26 @@ const ShowPosts = () => {
                         </p>
                       )}
                     </div>
-                    {post.isLocal && <span className="local-badge">New</span>}
+                    <div>
+                      <button onClick={() => fetchComments(post.id)}>
+                        View
+                      </button>
+                    </div>
                   </div>
                 ))
               ) : (
                 <p>No posts available</p>
               )}
-              <Pagination
-                totalPosts={allPosts.length}
-                postsPerPage={postsPerPage}
-                setCurrentPage={setCurrentPage}
-                currentPage={currentPage}
-              />
             </div>
           )}
         </div>
       </div>
+      <Pagination
+        totalPosts={allPosts.length}
+        postsPerPage={postsPerPage}
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+      />
     </div>
   );
 };

@@ -12,7 +12,7 @@ const Pagination = ({
   }
 
   return (
-    <div className="flex gap-2 justify-center mt-4">
+    <div className="flex gap-2 justify-center items-center mb-4 w-full py-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg shadow-md">
       {pageNumbers.map((number) => (
         <button
           key={number}

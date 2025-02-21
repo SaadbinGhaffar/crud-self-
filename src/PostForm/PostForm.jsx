@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import TextInput from "../../components/Input/TextInput";
 
-const PostForm = ({ onCreatePost }) => {
+const PostForm = ({ onCreatePost, logoutUser }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState({
@@ -98,6 +98,11 @@ const PostForm = ({ onCreatePost }) => {
       >
         {isSubmitting ? "Creating..." : "Create Post"}
       </PrimaryButton>
+
+      {/* <button onClick={logoutUser}>
+        <p>logout</p>
+      </button> */}
+
       {errors.general && <p className="error-message">{errors.general}</p>}
     </div>
   );

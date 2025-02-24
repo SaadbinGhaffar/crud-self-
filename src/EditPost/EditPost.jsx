@@ -7,6 +7,7 @@ const EditPost = () => {
   const navigate = useNavigate();
   const [post, setPost] = useState({ title: "", body: "" });
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     // Get post data from localStorage or API
@@ -20,6 +21,7 @@ const EditPost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const response = await fetch(
@@ -58,10 +60,12 @@ const EditPost = () => {
 
       setMessage("Post updated successfully!");
       setTimeout(() => {
-        navigate(-1); // Go back to previous page
-      }, 1500);
+        setIsSubmitting(false);
+        navigate(-1);
+      }, 2000);
     } catch (error) {
       setMessage(`Error updating post: ${error.message}`);
+      setIsSubmitting(false);
     }
   };
 
@@ -89,7 +93,9 @@ const EditPost = () => {
           />
         </div>
         <div className="button-group">
-          <button type="submit">Save Changes</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Saving" : "Save Changes"}
+          </button>
           <button type="button" onClick={() => navigate(-1)}>
             Cancel
           </button>

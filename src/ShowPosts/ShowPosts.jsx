@@ -120,8 +120,12 @@ const ShowPosts = () => {
       );
       const comments = await response.json();
 
+      const postResponse = await fetch(
+        `https://jsonplaceholder.typicode.com/posts/${postId}`
+      );
+      const post = await postResponse.json();
       // Navigate with comments and postId
-      navigate("/all-comments", { state: { comments, postId } });
+      navigate("/all-comments", { state: { comments, postId, post } });
     } catch (error) {
       console.error("Error fetching comments:", error);
     }

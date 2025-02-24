@@ -20,72 +20,6 @@ const Login = ({ setLoggedin }) => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Fetch posts when component mounts
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     try {
-  //       setLoading(true);
-
-  //       // Get posts from API
-  //       const response = await fetch(
-  //         "https://jsonplaceholder.typicode.com/posts"
-  //       );
-  //       const apiPosts = await response.json();
-
-  //       // Get user data to display usernames instead of just IDs
-  //       const users = JSON.parse(localStorage.getItem("users")) || [];
-
-  //       // Get any locally stored posts
-  //       const localPosts = JSON.parse(localStorage.getItem("userPosts")) || [];
-
-  //       // Create a combined array with enhanced post info
-  //       const combinedPosts = [
-  //         ...apiPosts.map((post) => ({
-  //           ...post,
-  //           content: post.body,
-  //           author:
-  //             users.find((u) => u.id === post.userId)?.email ||
-  //             `User ${post.userId}`,
-  //           createdAt: post.createdAt || new Date(2023, 0, 1).toISOString(), // Default date for API posts
-  //         })),
-  //         ...localPosts.map((post) => ({
-  //           ...post,
-  //           content: post.body || post.content,
-  //           author:
-  //             users.find((u) => u.id === post.userId)?.email ||
-  //             `User ${post.userId}`,
-  //         })),
-  //       ];
-
-  //       // Sort by created date, newest first
-  //       combinedPosts.sort(
-  //         (a, b) =>
-  //           new Date(b.createdAt || b.updatedAt || 0) -
-  //           new Date(a.createdAt || a.updatedAt || 0)
-  //       );
-
-  //       setAllPosts(combinedPosts);
-  //     } catch (err) {
-  //       setError(`Failed to fetch posts: ${err.message}`);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchPosts();
-
-  //   // Set up event listener for local storage changes
-  //   const handleStorageChange = () => {
-  //     fetchPosts();
-  //   };
-
-  //   window.addEventListener("storage", handleStorageChange);
-
-  //   return () => {
-  //     window.removeEventListener("storage", handleStorageChange);
-  //   };
-  // }, []);
-
   // Handle pagination
   useEffect(() => {
     const lastPostIndex = currentPage * postsPerPage;
@@ -113,7 +47,7 @@ const Login = ({ setLoggedin }) => {
     if (user) {
       localStorage.setItem("loggedInUser", JSON.stringify(user));
       setLoggedin(user);
-      navigate(`/posts/${user.id}`);
+      navigate(`/`);
     } else {
       setError("Email or Password is incorrect");
     }

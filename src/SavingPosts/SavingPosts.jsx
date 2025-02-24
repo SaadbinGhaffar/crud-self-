@@ -1,5 +1,4 @@
 import React from "react";
-import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 
 const SavingPosts = ({
@@ -7,7 +6,6 @@ const SavingPosts = ({
   setNewTitle,
   newContent,
   setNewContent,
-  handleSavePost,
   setEditPost,
 }) => {
   return (

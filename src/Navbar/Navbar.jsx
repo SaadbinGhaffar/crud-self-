@@ -1,62 +1,3 @@
-// import { Link, useNavigate } from "react-router-dom";
-// import { useState, useEffect } from "react";
-// import "./Navbar.css";
-// import PrimaryButton from "../../components/Buttons/PrimaryButton";
-
-// const Navbar = () => {
-//   const navigate = useNavigate();
-//   const [isLoggedIn, setIsLoggedIn] = useState(false);
-//   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-
-//   useEffect(() => {
-//     // Check login status whenever component mounts or updates
-//     const user = localStorage.getItem("loggedInUser");
-//     setIsLoggedIn(!!user);
-//   }, []);
-
-//   const logoutUser = () => {
-//     localStorage.removeItem("loggedInUser");
-//     setIsLoggedIn(false);
-//     navigate("/login");
-//   };
-
-//   const handleMyPosts = () => {
-//     if (isLoggedIn) {
-//       navigate(`/posts/${loggedInUser.id}`);
-//     }
-//   };
-
-//   return (
-//     <nav className="navbar">
-//       <h2 className="navbar-logo">CRUD APP</h2>
-//       <div className="navbar-links">
-//         <Link to="/" className="nav-link">
-//           All Posts
-//         </Link>
-//         {!isLoggedIn ? (
-//           <>
-//             <Link to="/login" className="nav-link">
-//               Login
-//             </Link>
-//             <Link to="/signup" className="nav-link">
-//               Signup
-//             </Link>
-//           </>
-//         ) : (
-//           <div>
-//             <button onClick={logoutUser} className="nav-link">
-//               <span>Logout</span>
-//             </button>
-//             <PrimaryButton onClick={handleMyPosts}>My Posts</PrimaryButton>
-//           </div>
-//         )}
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
-
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import "./Navbar.css";
@@ -134,7 +75,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <button onClick={handleMyPosts} className="dropdown-item">
-                    My Posts
+                    Add Posts
                   </button>
                   <button onClick={logoutUser} className="dropdown-item">
                     Logout

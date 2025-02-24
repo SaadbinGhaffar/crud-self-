@@ -12,14 +12,14 @@ const Posts = () => {
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Fetch posts and comments when component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
 
-        // Fetch posts for the specific user from API
+        //fetch posts from  api of the user gievn in the URL
         const postsResponse = await fetch(
           `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
         );
@@ -63,6 +63,10 @@ const Posts = () => {
       return;
     }
 
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
     try {
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/posts",
@@ -84,7 +88,7 @@ const Posts = () => {
       // Generate a unique ID for the new post
       const enhancedPost = {
         ...newPost,
-        id: crypto.randomUUID(), // Unique ID for post management
+        id: crypto.randomUUID(),
         isLocal: true,
         createdAt: new Date().toISOString(),
       };
@@ -105,6 +109,10 @@ const Posts = () => {
       setMessage("Post created successfully!");
     } catch (error) {
       setMessage(`Error creating post: ${error.message}`);
+    } finally {
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 2000);
     }
   };
 
@@ -152,7 +160,7 @@ const Posts = () => {
   };
 
   const handleEditPost = async (postId) => {
-    navigate(`/edit-post/${postId}`);
+    navigate(`/edit-post/${postId}`); //as we are editing the post on a new screen
   };
 
   // Comment Operations
@@ -247,11 +255,6 @@ const Posts = () => {
     }
   };
 
-  // function logoutUser() {
-  //   localStorage.removeItem("loggedInUser");
-  //   navigate("/login");
-  // }
-
   if (loading) {
     return <div className="loading">Loading posts and comments...</div>;
   }
@@ -262,7 +265,8 @@ const Posts = () => {
         <Navbar />
       </div>
       <h3 className="subheader">
-        Total {posts.length} {posts.length === 1 ? "Post" : "Posts"}
+        Total {posts.length}{" "}
+        {posts.length === 1 || posts.length === 0 ? "Post" : "Posts"}
       </h3>
 
       {posts.map((post) => (
@@ -279,7 +283,7 @@ const Posts = () => {
           onDeleteComment={handleDeleteComment}
         />
       ))}
-      <PostForm onCreatePost={handleCreatePost} />
+      <PostForm onCreatePost={handleCreatePost} isSubmitting={isSubmitting} />
       {message && <div className="message">{message}</div>}
     </div>
   );

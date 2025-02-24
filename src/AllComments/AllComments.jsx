@@ -1,131 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import { useLocation, useNavigate } from "react-router-dom";
-
-// const AllComments = () => {
-//   const location = useLocation();
-//   const navigate = useNavigate();
-//   const postId = location.state?.postId;
-
-//   // Fetch logged-in user from localStorage
-//   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser")) || null;
-
-//   // Retrieve stored comments or initialize with state comments
-//   const savedComments =
-//     JSON.parse(localStorage.getItem(`comments_${postId}`)) ||
-//     location.state?.comments ||
-//     [];
-//   const [comments, setComments] = useState(savedComments);
-
-//   // Save comments to localStorage whenever they change
-//   useEffect(() => {
-//     localStorage.setItem(`comments_${postId}`, JSON.stringify(comments));
-//   }, [comments, postId]);
-
-//   // Function to add a new comment
-//   const handleAddComment = async (body) => {
-//     if (!body.trim()) {
-//       alert("Comment cannot be empty.");
-//       return;
-//     }
-
-//     try {
-//       const response = await fetch(
-//         "https://jsonplaceholder.typicode.com/comments",
-//         {
-//           method: "POST",
-//           body: JSON.stringify({
-//             postId,
-//             body,
-//             email: loggedInUser.email,
-//           }),
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//         }
-//       );
-
-//       const newComment = await response.json();
-//       const enhancedComment = { ...newComment, id: crypto.randomUUID() };
-
-//       setComments((prevComments) => [...prevComments, enhancedComment]);
-//     } catch (error) {
-//       console.error("Error adding comment:", error);
-//     }
-//   };
-
-//   // Function to delete a comment
-//   const handleDelete = (commentId) => {
-//     setComments((prevComments) =>
-//       prevComments.filter((comment) => comment.id !== commentId)
-//     );
-//   };
-
-//   // Function to update a comment
-//   const handleUpdate = (commentId, updatedText) => {
-//     setComments((prevComments) =>
-//       prevComments.map((comment) =>
-//         comment.id === commentId ? { ...comment, body: updatedText } : comment
-//       )
-//     );
-//   };
-
-//   return (
-//     <div>
-//       <h2>All Comments </h2>
-//       <button onClick={() => navigate(-1)}>🔙 Back</button>
-
-//       {loggedInUser && (
-//         <div>
-//           <textarea id="newComment" placeholder="Write a comment..."></textarea>
-//           <button
-//             onClick={() =>
-//               handleAddComment(document.getElementById("newComment").value)
-//             }
-//           >
-//             Add Comment
-//           </button>
-//         </div>
-//       )}
-
-//       {comments.map((comment) => (
-//         <div
-//           key={comment.id}
-//           style={{
-//             border: "1px solid #ccc",
-//             padding: "10px",
-//             marginBottom: "10px",
-//           }}
-//         >
-//           <p>
-//             <strong>{comment.email}:</strong> {comment.body}
-//           </p>
-
-//           {loggedInUser &&
-//             comment.email?.toLowerCase() ===
-//               loggedInUser.email?.toLowerCase() && (
-//               <div>
-//                 <button onClick={() => handleDelete(comment.id)}>Delete</button>
-//                 <button
-//                   onClick={() => {
-//                     const newText = prompt(
-//                       "Enter updated comment:",
-//                       comment.body
-//                     );
-//                     if (newText) handleUpdate(comment.id, newText);
-//                   }}
-//                 >
-//                   Update
-//                 </button>
-//               </div>
-//             )}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default AllComments;
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./AllComments.css";
@@ -133,10 +5,12 @@ const AllComments = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const postId = location.state?.postId;
+
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
-
+  const [post, setPost] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // Get logged-in user from localStorage
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser")) || null;
 
@@ -175,6 +49,30 @@ const AllComments = () => {
 
     fetchComments();
 
+    // const fetchPost = async () => {
+    //   try {
+    //     const response = await fetch(
+    //       `https://jsonplaceholder.typicode.com/posts/${postId}`
+    //     );
+    //     const post = await response.json();
+    //     const localPosts = JSON.parse(localStorage.getItem("userPosts")) || [];
+
+    //     // Filter comments for the specific post
+    //     const filteredApiPosts = post.filter((post) => post.postId === postId);
+    //     const filteredLocalPosts = localPosts.filter(
+    //       (post) => post.postId === postId
+    //     );
+
+    //     // Combine and set comments
+    //     setPost([...filteredApiPosts, ...filteredLocalPosts]);
+    //     setMessage("Comments loaded successfully!");
+    //   } catch (error) {
+    //     setMessage("cannot get posts Data");
+    //   }
+    // };
+
+    // fetchPost();
+
     // Listen for storage events to update comments when changes occur
     const handleStorageChange = () => {
       const localComments =
@@ -197,6 +95,9 @@ const AllComments = () => {
       setMessage("Comment cannot be empty.");
       return;
     }
+
+    if (isSubmitting) return; // Prevent multiple submissions
+    setIsSubmitting(true); // Disable the button
 
     try {
       const response = await fetch(
@@ -244,6 +145,11 @@ const AllComments = () => {
       document.getElementById("newComment").value = "";
     } catch (error) {
       setMessage(`Error adding comment: ${error.message}`);
+    } finally {
+      // Enable the button after 2 seconds
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 2000);
     }
   };
 
@@ -360,6 +266,14 @@ const AllComments = () => {
           Go Back
         </button>
       </div>
+      <div>
+        {post.map((post) => (
+          <div key={post.id}>
+            <h2>{post.title}</h2>
+            <p>{post.body}</p>
+          </div>
+        ))}
+      </div>
 
       {loggedInUser && (
         <div className="comment-form">
@@ -373,8 +287,9 @@ const AllComments = () => {
             onClick={() =>
               handleAddComment(document.getElementById("newComment").value)
             }
+            disabled={isSubmitting}
           >
-            Add Comment
+            {isSubmitting ? "Adding Comment..." : "Add Comment"}
           </button>
         </div>
       )}

@@ -21,10 +21,37 @@ const PostSection = ({
   const [newTitle, setNewTitle] = useState(post.title);
   const [newContent, setNewContent] = useState(post.content);
   const [showPosts, setShowPosts] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleSavePost = () => {
     onEditPost(post.id, newTitle, newContent);
     setEditPost(false);
+  };
+
+  const handleAddComment = async (e) => {
+    e.preventDefault();
+    const commentText = e.target.elements.comment.value;
+
+    if (!commentText.trim()) {
+      setMessage("Comment cannot be empty");
+      return;
+    }
+
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    try {
+      await onCreateComment(post.id, commentText);
+      e.target.elements.comment.value = "";
+      setMessage("Comment added successfully!");
+    } catch (error) {
+      setMessage("Error adding comment");
+    } finally {
+      setTimeout(() => {
+        setIsSubmitting(false);
+      }, 2000);
+    }
   };
 
   return (

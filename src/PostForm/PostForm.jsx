@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import TextInput from "../../components/Input/TextInput";
 
-const PostForm = ({ onCreatePost, logoutUser }) => {
+const PostForm = ({ onCreatePost, logoutUser, isSubmitting }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [errors, setErrors] = useState({
     title: "",
     content: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateForm = () => {
     let formIsValid = true;
@@ -39,7 +38,10 @@ const PostForm = ({ onCreatePost, logoutUser }) => {
     return formIsValid;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
     try {
       // Create post
       await onCreatePost(title.trim(), content.trim());
@@ -53,8 +55,6 @@ const PostForm = ({ onCreatePost, logoutUser }) => {
         ...prev,
         general: "Failed to create post. Please try again.",
       }));
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -98,10 +98,6 @@ const PostForm = ({ onCreatePost, logoutUser }) => {
       >
         {isSubmitting ? "Creating..." : "Create Post"}
       </PrimaryButton>
-
-      {/* <button onClick={logoutUser}>
-        <p>logout</p>
-      </button> */}
 
       {errors.general && <p className="error-message">{errors.general}</p>}
     </div>
